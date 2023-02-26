@@ -97,10 +97,11 @@ $path = __DIR__;
             event.preventDefault(); // previne o comportamento padrão do link
 
             $.ajax({
-                url: 'http://127.0.0.1:8000/register',
                 method: 'POST',
+                url: 'http://localhost/admin_api/',
                 contentType: 'application/json',
                 data: JSON.stringify({
+                    criar: "true",
                     name: $("#nome_cadastro").val(),
                     email: $("#email_cadastro").val(),
                     password: $("#senha_cadastro").val()
