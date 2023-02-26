@@ -97,22 +97,23 @@ $path = __DIR__;
             event.preventDefault(); // previne o comportamento padrão do link
 
             $.ajax({
-                method: "POST",
-                url: "http://127.0.0.1:8000/register",
+                url: 'http://127.0.0.1:8000/register',
+                method: 'POST',
+                contentType: 'application/json',
                 data: JSON.stringify({
                     name: $("#nome_cadastro").val(),
                     email: $("#email_cadastro").val(),
                     password: $("#senha_cadastro").val()
                 }),
-
+                success: function(data) {
+                console.log(data);
                 // data: JSON.stringify({
                 //     id: 'test',
                 //     command: 'echo michael'
                 // }),
 
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
+                // dataType: 'json',
+                
                 }
             })
         })

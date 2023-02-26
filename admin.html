@@ -6,11 +6,30 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
 </head>
+<style>
+    html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#sidebar {
+  height: 100vh;
+  width: 20vw;
+}
+
+@media (max-width: 992px) {
+  #sidebar {
+    position: static;
+    height: auto;
+    /* width: 20vw; */
+  }
+}
+</style>
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-3 bg-dark text-light">
-				<h2>Menu</h2>
+			<div class="col-md-3 bg-dark text-light " id="sidebar">
+				<h2>Empresa X</h2>
 				<button class="btn btn-primary btn-block" id="btnHome">Home</button>
 			</div>
 			<div class="col-md-9">
@@ -31,30 +50,44 @@
 			</div>
 		</div>
 	</div>
-
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/js/bootstrap.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			// criação do DataTable
 			var table = $('#tableUsuarios').DataTable({
 				ajax: {
-					url: 'url/para/obter/usuarios',
+					method:'POST',
+					url: 'http://localhost/admin_api/',
+					data:{},
 					dataSrc: ''
 				},
+				columnDefs: [{
+					width: '5%',
+					targets: [0]
+				},
+				{
+					width: '30%',
+					targets: [1]
+				},
+				],
 				columns: [
-					{ data: 'id' },
-					{ data: 'nome' },
-					{ data: 'email' },
+				{ data: function(data, type, row, meta) { 
+					return data.id;
+				}},
+				{ data: function(data, type, row, meta) { 
+					return data.name;
+				}},
+				{ data: function(data, type, row, meta) { 
+					return data.email;
+				}},
 					{
-						data: null,
-						render: function(data, type, row, meta) {
-							// botões para editar e deletar usuário
-							return '<button class="btn btn-primary">Editar</button> ' +
-								   '<button class="btn btn-danger">Deletar</button>';
+						data: function(data, type, row, meta) {
+							return `<button class="btn btn-primary" data-id="${data.id}" onclick="editar(this)">Editar</button>` +
+								   `<button class="btn btn-danger" data-id="${data.id}" onclick="deletar(this)">Deletar</button>`;
 						}
 					}
 				]
@@ -65,6 +98,24 @@
 				table.ajax.reload();
 			});
 		});
+		function deletar(usuario){
+			console.log(usuario)
+			if(confirm("Realmente deseja deletar")){
+				$.ajax({
+					method:'POST',
+					url:'http://localhost/admin_api/',
+					contentType: 'application/json',
+					data:JSON.stringify({
+						deletar_id:usuario.dataset.id
+					})
+				})
+				reload();
+			}
+		
+		}
+		function reload(){
+			$('#tableUsuarios').DataTable().ajax.reload()
+		}
 	</script>
 </body>
 </html>
