@@ -1,0 +1,37 @@
+html,
+body {
+    max-height: 100vh;
+    margin: 0px;
+}
+body {
+    background-color: rgba(189, 189, 189,0.5);
+}
+#sidebar {
+    margin: 0px;
+    padding: 10px 0 10px 0;
+    min-height: 100vh;
+    /* width: 300px; */
+    text-align:center;
+    /* border-radius: 15px; */
+}
+table{
+    
+    background-color: #ffffff !important;
+    /* border:transparet !important; */
+    box-shadow: 1px 0px 10px 1px #51525282;
+}
+.tableBox{
+    margin:0 50px 0 50px;
+}
+.header{
+    background-color: #505050;
+    
+}
+@media (max-width: 992px) {
+    #sidebar {
+        position: static;
+        height: auto;
+        display:none;
+        /* width: 20vw; */
+    }
+}
